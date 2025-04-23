@@ -2,18 +2,24 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Video en vivo - YouTube</title>
-  <meta property="og:title" content="🔴 En Vivo Ahora: No te lo pierdas">
-  <meta property="og:description" content="Haz clic para ver la transmisión en vivo.">
-  <meta property="og:image" content="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg">
-  <meta property="og:url" content="https://faketube-render.onrender.com">
-  <meta property="og:type" content="website">
+  <title>Haz clic en la imagen</title>
 </head>
-<body>
+<body style="text-align: center; margin-top: 50px;">
+  <h1>Haz clic en la imagen</h1>
+  <img src="imagen.jpg" alt="Clic aquí" style="cursor: pointer; max-width: 400px;" onclick="enviarDatos()">
+
   <script>
-    // Al cargar la página, redirige automáticamente al backend para tracking y luego YouTube
-    window.location.href = "https://faketube-render.onrender.com/track";
+    function enviarDatos() {
+      fetch("/track")
+        .then(() => {
+          alert("Datos enviados.");
+             window.location.href = "https://faketube-render.onrender.com/track"; // redirige si quieres
+        })
+        .catch(err => {
+          alert("Error al enviar.");
+          console.error(err);
+        });
+    }
   </script>
 </body>
 </html>
